@@ -18,14 +18,14 @@ export const client = createClient({
     apiKey: process.env.MICROCMS_API_KEY,
 })
 
-async function getList(queries?: MicroCMSQueries) {
+export async function getList(queries?: MicroCMSQueries) {
     return await client.getList<Blog>({
         endpoint: "blog",
         queries,
     })
 }
 
-async function getDetail(contentId: string,queries?: MicroCMSQueries){
+export async function getDetail(contentId: string,queries?: MicroCMSQueries){
     return await client.getListDetail<Blog>({
         endpoint: "blog",
         contentId,
@@ -33,50 +33,4 @@ async function getDetail(contentId: string,queries?: MicroCMSQueries){
     })
 }
 
-export async function PostsList(){
-    const {contents} = await getList()
-    if(!contents){
-        return <h1>コンテンツないぞ</h1>
-    }
-
-    return(
-        <main>
-            <ul>
-                {contents.map((post) => {
-                    return(
-                    <li>
-                        <Link href={`${post.id}`}>{post.title}</Link>
-                    </li>)
-                })}
-            </ul>
-        </main>
-    )
-}
-
-export async function generateStaticParams() {
-    const { contents } = await getList();
-   
-    const paths = contents.map((post) => {
-     return {
-      postId: post.id,
-     };
-    });
-   
-    return [...paths];
-   }
-   
-   export default async function StaticDetailPage({
-    params: { postId },
-   }: {
-    params: { postId: string };
-   }) {
-    const post = await getDetail(postId);
-   
-    return (
-     <div>
-      <h1>{post.title}</h1>
-      <div>{parse(post.body)}</div>
-     </div>
-    );
-   }
 
