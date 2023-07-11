@@ -14,7 +14,8 @@ export default async function Blog(){
                     return(
                     <li>
                         <Link href={`./blog/${post.id}`}>{post.title}</Link>
-                    </li>)
+                    </li>
+                    )
                 })}
             </ul>
         </main>
